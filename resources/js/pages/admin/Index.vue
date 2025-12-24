@@ -159,12 +159,12 @@ const deleteItem = (): void => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-slate-950 text-slate-50 p-6">
+    <div class="min-h-screen bg-black text-slate-50 p-6">
         <div class="max-w-7xl mx-auto">
             <!-- Header -->
             <div class="mb-8 flex justify-between items-center">
                 <div>
-                    <h1 class="text-3xl font-bold mb-2">Content Management</h1>
+                    <h1 class="text-3xl font-bold mb-2">Movie Managment System</h1>
                     <p class="text-slate-400">Manage your video content library</p>
                 </div>
                 <a href="/admin/create-movies"
@@ -177,13 +177,13 @@ const deleteItem = (): void => {
             </div>
 
             <!-- Content Grid -->
-            <div v-if="items.length > 0" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div v-if="items.length > 0" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
                 <div v-for="item in items" :key="item.id"
-                    class="bg-slate-900 rounded-lg border border-slate-800 overflow-hidden hover:border-slate-700 transition-all duration-200 group">
+                    class="bg-black rounded-lg border border-slate-800 overflow-hidden hover:border-slate-700 transition-all duration-200 group">
                     <!-- Poster Image -->
-                    <div class="relative aspect-video bg-slate-800 overflow-hidden">
+                    <div class="relative aspect-video black-800 overflow-hidden">
                         <img v-if="item.poster" :src="getImageUrl(item.poster)" :alt="item.title"
-                            class="h-full w-full  group-hover:scale-105 transition-transform duration-200" />
+                            class="h-full  m-auto w-1/2  group-hover:scale-105 transition-transform duration-200" />
                         <div v-else class="w-full h-full flex items-center justify-center">
                             <svg class="w-16 h-16 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -192,7 +192,7 @@ const deleteItem = (): void => {
                         </div>
                         <!-- Duration Badge -->
                         <div v-if="item.duration"
-                            class="absolute top-2 right-2 bg-slate-950/80 backdrop-blur-sm px-2 py-1 rounded text-xs font-medium">
+                            class="absolute top-2 right-2 black-950/80 backdrop-blur-sm px-2 py-1 rounded text-xs font-medium">
                             {{ item.duration }}
                         </div>
                     </div>
@@ -227,7 +227,7 @@ const deleteItem = (): void => {
                         <!-- Actions -->
                         <div class="flex gap-2">
                             <button @click="openEditModal(item)"
-                                class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-50 px-3 py-2 rounded text-sm font-medium transition-colors">
+                                class="flex-1 black-800 hover:bg-slate-700 text-slate-50 px-3 py-2 rounded text-sm font-medium transition-colors">
                                 Edit
                             </button>
                             <button @click="confirmDelete(item.id)"
@@ -240,7 +240,7 @@ const deleteItem = (): void => {
             </div>
 
             <!-- Empty State -->
-            <div v-else class="text-center py-12 bg-slate-900 rounded-lg border border-slate-800">
+            <div v-else class="text-center py-12 black-900 rounded-lg border border-slate-800">
                 <svg class="w-16 h-16 text-slate-700 mx-auto mb-4" fill="none" stroke="currentColor"
                     viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -256,7 +256,7 @@ const deleteItem = (): void => {
                 class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50"
                 @click.self="closeModal">
                 <div
-                    class="bg-slate-900 rounded-xl border border-slate-800 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
+                    class="black-900 rounded-xl border border-slate-800 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
                     <!-- Modal Header -->
                     <div class="flex items-center justify-between p-6 border-b border-slate-800">
                         <h2 class="text-2xl font-bold">Edit Content</h2>
@@ -274,7 +274,7 @@ const deleteItem = (): void => {
                         <div>
                             <label class="block text-sm font-medium mb-2">Title *</label>
                             <input v-model="formData.title" type="text" required
-                                class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                class="w-full black-800 border border-slate-700 rounded-lg px-4 py-2 text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="Enter title" />
                         </div>
 
@@ -282,7 +282,7 @@ const deleteItem = (): void => {
                         <div>
                             <label class="block text-sm font-medium mb-2">Duration</label>
                             <input v-model="formData.duration" type="text"
-                                class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                class="w-full black-800 border border-slate-700 rounded-lg px-4 py-2 text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="e.g., 2h 30m" />
                         </div>
 
@@ -290,7 +290,7 @@ const deleteItem = (): void => {
                         <div>
                             <label class="block text-sm font-medium mb-2">Description</label>
                             <textarea v-model="formData.description" rows="4"
-                                class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                                class="w-full black-800 border border-slate-700 rounded-lg px-4 py-2 text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                                 placeholder="Enter description"></textarea>
                         </div>
 
@@ -301,7 +301,7 @@ const deleteItem = (): void => {
                             <!-- Current/Preview Image -->
                             <div v-if="previewUrl" class="mb-3 relative">
                                 <img :src="previewUrl" alt="Poster preview"
-                                    class="w-full max-h-64 object-contain rounded-lg border border-slate-700 bg-slate-800" />
+                                    class="w-full max-h-64 object-contain rounded-lg border border-slate-700 black-800" />
                             </div>
 
                             <!-- File Input -->
@@ -309,7 +309,7 @@ const deleteItem = (): void => {
                                 <input type="file" @change="handleFileChange" accept="image/*" class="hidden"
                                     id="poster-upload" />
                                 <label for="poster-upload"
-                                    class="flex items-center justify-center gap-2 w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg px-4 py-3 text-slate-50 cursor-pointer transition-colors">
+                                    class="flex items-center justify-center gap-2 w-full black-800 hover:bg-slate-700 border border-slate-700 rounded-lg px-4 py-3 text-slate-50 cursor-pointer transition-colors">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
@@ -324,7 +324,7 @@ const deleteItem = (): void => {
                         <div>
                             <label class="block text-sm font-medium mb-2">Release Date</label>
                             <input v-model="formData.release_date" type="date"
-                                class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                                class="w-full black-800 border border-slate-700 rounded-lg px-4 py-2 text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                         </div>
 
                         <!-- Error Message -->
@@ -335,7 +335,7 @@ const deleteItem = (): void => {
                         <!-- Modal Actions -->
                         <div class="flex gap-3 pt-4">
                             <button type="button" @click="closeModal"
-                                class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-50 px-4 py-2 rounded-lg font-medium transition-colors">
+                                class="flex-1 black-800 hover:bg-slate-700 text-slate-50 px-4 py-2 rounded-lg font-medium transition-colors">
                                 Cancel
                             </button>
                             <button type="submit" :disabled="saving"
@@ -360,7 +360,7 @@ const deleteItem = (): void => {
             <div v-if="showDeleteConfirm"
                 class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50"
                 @click.self="cancelDelete">
-                <div class="bg-slate-900 rounded-xl border border-slate-800 w-full max-w-md shadow-2xl">
+                <div class="black-900 rounded-xl border border-slate-800 w-full max-w-md shadow-2xl">
                     <div class="p-6">
                         <div class="flex items-center gap-4 mb-4">
                             <div class="w-12 h-12 rounded-full bg-red-950/50 flex items-center justify-center">
@@ -378,7 +378,7 @@ const deleteItem = (): void => {
                             permanently removed.</p>
                         <div class="flex gap-3">
                             <button @click="cancelDelete"
-                                class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-50 px-4 py-2 rounded-lg font-medium transition-colors">
+                                class="flex-1 black-800 hover:bg-slate-700 text-slate-50 px-4 py-2 rounded-lg font-medium transition-colors">
                                 Cancel
                             </button>
                             <button @click="deleteItem" :disabled="deleting"

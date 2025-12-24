@@ -10,7 +10,7 @@ const form = useForm({
 })
 
 const submit = () => {
-    form.post('/create-movies')
+    form.post('/admin/movies')
 }
 
 const handleFileUpload = (e: Event) => {

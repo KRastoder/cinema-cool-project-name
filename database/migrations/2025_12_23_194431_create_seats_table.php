@@ -11,10 +11,9 @@ return new class extends Migration
         Schema::create('seats', function (Blueprint $table) {
             $table->id();
             $table->foreignId('hall_id')->constrained()->onDelete('cascade');
-            $table->unsignedInteger('row_number');
             $table->unsignedInteger('seat_number');
             $table->enum('type', ['normal', 'vip', 'disabled', 'blocked'])->default('normal');
-            $table->unique(['hall_id', 'row_number', 'seat_number']);
+            $table->unique(['hall_id', 'seat_number']);
             $table->timestamps();
         });
     }
