@@ -2,6 +2,7 @@
 namespace App\Repositories;
 
 use App\Models\Movie;
+use Illuminate\Support\Facades\Storage;
 
 class AdminRepo
 {
@@ -10,7 +11,6 @@ class AdminRepo
     public function __construct()
     {
         $this->movieModel = new Movie();
-
     }
 
     public function createMovie($request): void
@@ -24,12 +24,8 @@ class AdminRepo
         ]);
 
         $posterPath = null;
-
         if ($request->hasFile('poster')) {
-            $posterPath = $request->file('poster')->store(
-                'posters',
-                'public'
-            );
+            $posterPath = $request->file('poster')->store('posters', 'public');
         }
 
         $this->movieModel->create([
@@ -41,4 +37,45 @@ class AdminRepo
         ]);
     }
 
+    public function allMovies(): mixed
+    {
+        return $this->movieModel->orderBy('created_at', 'desc')->get();
+    }
+
+    public function updateMovie($id, $data)
+    {
+        $movie = Movie::findOrFail($id);
+
+        $updateData = [
+            'title'        => $data['title'],
+            'duration'     => $data['duration'] ?? null,
+            'description'  => $data['description'] ?? null,
+            'release_date' => $data['release_date'] ?? null,
+        ];
+
+        // If a new poster is uploaded, delete the old one and store the new one
+        if (isset($data['poster']) && $data['poster'] instanceof \Illuminate\Http\UploadedFile) {
+            // Delete old poster if it exists
+            if ($movie->poster) {
+                Storage::disk('public')->delete($movie->poster);
+            }
+
+            // Store new poster
+            $updateData['poster'] = $data['poster']->store('posters', 'public');
+        }
+
+        return $movie->update($updateData);
+    }
+
+    public function deleteMovie($id)
+    {
+        $movie = Movie::findOrFail($id);
+
+        // Delete the poster file if it exists
+        if ($movie->poster) {
+            Storage::disk('public')->delete($movie->poster);
+        }
+
+        return $movie->delete();
+    }
 }
