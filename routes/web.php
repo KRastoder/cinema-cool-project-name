@@ -11,7 +11,10 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+//admin TODO ADMIN MIDDLEWARE
 Route::get('/admin', [AdminController::class, 'createMoviesForm'])->name('admin.create-movies');
+Route::post('/create-movies', [AdminController::class, 'updateMovies'])->name('update-movies');
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
