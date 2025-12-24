@@ -14,15 +14,14 @@ Route::get('/', function () {
 
 Route::prefix('admin')->middleware('auth')->group(function () {
 
-    //ADMIN MOVIES
+    //MOVIES
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
     Route::get('/create-movies', [AdminController::class, 'createMoviesForm']);
     Route::post('/movies', [AdminController::class, 'store']);
     Route::put('/movies/{id}', [AdminController::class, 'update']);
     Route::delete('/movies/{id}', [AdminController::class, 'destroy']);
 
-    //ADMIN HALL
-
+    //HALL
     Route::get('/hall-builder', [HallController::class, 'layoutBuilder'])->name('admin.index');
     Route::post('/hall-store', [HallController::class, 'store'])->name('halls.store');
 });

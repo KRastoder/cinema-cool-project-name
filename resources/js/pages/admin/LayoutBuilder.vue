@@ -117,13 +117,14 @@ const rowWalkways = ref<number[]>([]);
 const colWalkways = ref<number[]>([]);
 const vipSeats = ref<number[]>([]);
 
+// --- FIX: Update types to accept number[] instead of string ---
 const form = useForm({
     name: '',
     rows: 6,
     columns: 10,
-    row_gap: null as string | null, // Preserving backend requirement
-    col_gap: null as string | null, // Preserving backend requirement
-    vip_list: [] as number[]        // Preserving backend requirement
+    row_gap: [] as number[], // Changed from string | null to number[]
+    col_gap: [] as number[], // Changed from string | null to number[]
+    vip_list: [] as number[]
 });
 
 // --- Validation Helpers ---
@@ -137,8 +138,7 @@ const validColPaths = computed(() =>
     [...new Set(colWalkways.value.filter(p => p > 0 && p < form.columns))].sort((a, b) => a - b)
 );
 
-// --- The Core Optimization: Pre-calculate the Grid ---
-// Instead of calculating on every render loop, we generate the map once.
+// --- Grid Generation (Optimized) ---
 interface GridCell {
     id: string;
     isPath: boolean;
@@ -146,22 +146,18 @@ interface GridCell {
 }
 
 const generatedGrid = computed(() => {
-    // If inputs are crazy, return empty to prevent crash
+    // Safety check for performance
     if (form.rows > 60 || form.columns > 60) return [];
 
     const cells: GridCell[] = [];
     let seatCounter = 0;
 
-    // Sets for O(1) lookup
     const rowGaps = new Set(validRowPaths.value);
     const colGaps = new Set(validColPaths.value);
 
-    // Build Rows (including gaps)
     for (let r = 1; r <= form.rows; r++) {
-        // 1. Process the row itself
-        // Build Columns (including gaps)
+        // 1. Columns
         for (let c = 1; c <= form.columns; c++) {
-            // Add Seat
             seatCounter++;
             cells.push({
                 id: `s-${r}-${c}`,
@@ -169,13 +165,12 @@ const generatedGrid = computed(() => {
                 seatNumber: seatCounter
             });
 
-            // If there is a column gap after this column, add a path cell
             if (colGaps.has(c)) {
                 cells.push({ id: `gp-c-${r}-${c}`, isPath: true, seatNumber: -1 });
             }
         }
 
-        // 2. If there is a ROW gap after this row, add a whole row of path cells
+        // 2. Row Gaps
         if (rowGaps.has(r)) {
             const visualColsCount = form.columns + validColPaths.value.length;
             for (let k = 0; k < visualColsCount; k++) {
@@ -196,7 +191,7 @@ const toggleVip = (seatNum: number) => {
 
 const isVip = (seatNum: number) => vipSeats.value.includes(seatNum);
 
-// --- Style Computations ---
+// --- Styles ---
 const gridStyle = computed(() => {
     const totalCols = form.columns + validColPaths.value.length;
     return {
@@ -206,17 +201,16 @@ const gridStyle = computed(() => {
     };
 });
 
-// --- Submission ---
+// --- Submit ---
 const submit = () => {
-    // Exact same logic as before to satisfy backend
-    form.row_gap = JSON.stringify(validRowPaths.value);
-    form.col_gap = JSON.stringify(validColPaths.value);
+    // Now types match: validRowPaths is number[], and form.row_gap is number[]
+    form.row_gap = validRowPaths.value;
+    form.col_gap = validColPaths.value;
     form.vip_list = vipSeats.value.sort((a, b) => a - b);
 
     form.post('/admin/hall-store', {
         onSuccess: () => {
-            // Optional: Reset or notify
-            // alert('Hall Saved');
+            // alert('Hall saved!') 
         }
     });
 };

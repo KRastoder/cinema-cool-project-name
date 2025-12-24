@@ -16,10 +16,8 @@ return new class extends Migration
             $table->enum('status', ['available', 'held', 'sold'])->default('available');
             $table->timestamp('held_at')->nullable();
 
-            // CRITICAL: prevents double booking
             $table->unique(['show_id', 'seat_id']);
 
-            // For expiration job performance
             $table->index(['status', 'held_at']);
 
             $table->timestamps();

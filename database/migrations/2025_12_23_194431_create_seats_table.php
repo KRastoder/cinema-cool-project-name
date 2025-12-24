@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('hall_id')->constrained()->onDelete('cascade');
             $table->unsignedInteger('seat_number');
-            $table->enum('type', ['normal', 'vip', 'disabled', 'blocked'])->default('normal');
+            $table->enum('type', ['normal', 'vip'])->default('normal');
             $table->unique(['hall_id', 'seat_number']);
             $table->timestamps();
         });
